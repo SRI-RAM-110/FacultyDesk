@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import API from "../api/axios";
 import "../styles/Register.css";
 
 const Register = () => {
@@ -25,18 +26,28 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
 
-    console.log("Registration Data:", formData);
+  try {
+    const response = await API.post("/auth/register", formData);
 
-    // Backend registration will be connected later.
-  };
+    alert(response.data);
+
+    window.location.href = "/login";
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+      error.response?.data ||
+      "Registration failed"
+    );
+  }
+};
 
   return (
     <div className="register-page">
