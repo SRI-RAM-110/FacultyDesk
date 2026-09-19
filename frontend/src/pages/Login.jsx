@@ -17,7 +17,6 @@ function Login() {
         {/* Left Section */}
         <div className="login-left">
           <div className="login-brand">
-            <div className="brand-icon">FD</div>
 
             <h1>Faculty Desk</h1>
 
