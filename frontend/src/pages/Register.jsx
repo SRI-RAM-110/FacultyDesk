@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/Register.css";
 
 const Register = () => {
@@ -11,6 +12,9 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,269 +35,363 @@ const Register = () => {
 
     console.log("Registration Data:", formData);
 
-    // Later:
-    // fetch("http://localhost:8080/faculty/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // });
+    // Backend registration will be connected later.
   };
 
   return (
     <div className="register-page">
 
-      {/* ================= LEFT SIDE ================= */}
-      <div className="register-left">
+      {/* =========================================
+          REGISTER CARD
+      ========================================= */}
 
-        {/* NEC Logo */}
-        <div className="logo-container">
-          <img
-            src="/nec-logo.png"
-            alt="Narasaraopeta Engineering College"
-            className="nec-logo"
-          />
+      <div className="register-card">
+
+        {/* =========================================
+            LEFT BRANDING
+        ========================================= */}
+
+        <div className="register-brand-panel">
+
+          <div className="register-brand-content">
+
+            
+
+            <h1>Faculty Desk</h1>
+
+            <p className="brand-tagline">
+              One Desk. Every Faculty Service.
+            </p>
+
+            <div className="brand-description">
+              <p>
+                A unified platform designed to simplify
+                faculty services and campus resources.
+              </p>
+            </div>
+
+          </div>
+
+
+          {/* Service Highlights */}
+
+          {/* <div className="register-services">
+
+            <div className="register-service">
+              <div className="service-icon">📅</div>
+
+              <div>
+                <h4>BOOK</h4>
+                <p>Reserve campus resources</p>
+              </div>
+            </div>
+
+            <div className="register-service">
+              <div className="service-icon">📋</div>
+
+              <div>
+                <h4>REQUEST</h4>
+                <p>Access faculty services</p>
+              </div>
+            </div>
+
+            <div className="register-service">
+              <div className="service-icon">⚙</div>
+
+              <div>
+                <h4>MANAGE</h4>
+                <p>Manage your bookings</p>
+              </div>
+            </div>
+
+            <div className="register-service">
+              <div className="service-icon">🤝</div>
+
+              <div>
+                <h4>COLLABORATE</h4>
+                <p>Connect with campus resources</p>
+              </div>
+            </div>
+
+          </div> */}
+
+
+          <div className="register-brand-footer">
+            Narasaraopet Engineering College
+          </div>
+
         </div>
 
-        {/* Heading */}
-        <h1>
-          Create <span>Faculty Account</span>
-        </h1>
 
-        <p className="subtitle">
-          Join the College Resource Booking System
-        </p>
+        {/* =========================================
+            RIGHT REGISTRATION FORM
+        ========================================= */}
 
-        {/* ================= FORM ================= */}
-        <form onSubmit={handleSubmit} className="register-form">
+        <div className="register-form-panel">
 
-          {/* Faculty ID */}
-          <div className="input-box">
-            <span className="input-icon">🪪</span>
+          <div className="register-header">
 
-            <input
-              type="text"
-              name="facultyId"
-              placeholder="Faculty ID"
-              value={formData.facultyId}
-              onChange={handleChange}
-              required
-            />
+            <div className="mobile-logo">
+              FD
+            </div>
 
-            <span className="example">
-              e.g. FAC001
-            </span>
+            <h2>Create Faculty Account</h2>
+
+            <p>
+              Register to access Faculty Desk services
+            </p>
+
           </div>
 
-          {/* Full Name */}
-          <div className="input-box">
-            <span className="input-icon">👤</span>
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form
+            className="register-form"
+            onSubmit={handleSubmit}
+          >
 
-          {/* Email */}
-          <div className="input-box">
-            <span className="input-icon">✉</span>
+            {/* Faculty ID */}
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className="register-field">
 
-          {/* Branch */}
-          <div className="input-box">
-            <span className="input-icon">🏛</span>
+              <label htmlFor="facultyId">
+                Faculty ID
+              </label>
 
-            <select
-              name="branch"
-              value={formData.branch}
-              onChange={handleChange}
-              required
+              <input
+                id="facultyId"
+                type="text"
+                name="facultyId"
+                placeholder="e.g. FAC001"
+                value={formData.facultyId}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            {/* Full Name */}
+
+            <div className="register-field">
+
+              <label htmlFor="name">
+                Full Name
+              </label>
+
+              <input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            {/* Email */}
+
+            <div className="register-field">
+
+              <label htmlFor="email">
+                Email Address
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            {/* Phone */}
+
+            <div className="register-field">
+
+              <label htmlFor="phone">
+                Phone Number
+              </label>
+
+              <input
+                id="phone"
+                type="tel"
+                name="phone"
+                placeholder="Enter your phone number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            {/* Department */}
+
+            <div className="register-field">
+
+              <label htmlFor="branch">
+                Department
+              </label>
+
+              <select
+                id="branch"
+                name="branch"
+                value={formData.branch}
+                onChange={handleChange}
+                required
+              >
+
+                <option value="">
+                  Select department
+                </option>
+
+                <option value="CSE">
+                  Computer Science & Engineering
+                </option>
+
+                <option value="AIML">
+                  Artificial Intelligence & Machine Learning
+                </option>
+
+                <option value="ECE">
+                  Electronics & Communication Engineering
+                </option>
+
+                <option value="EEE">
+                  Electrical & Electronics Engineering
+                </option>
+
+                <option value="MECH">
+                  Mechanical Engineering
+                </option>
+
+                <option value="CIVIL">
+                  Civil Engineering
+                </option>
+
+                <option value="IT">
+                  Information Technology
+                </option>
+
+              </select>
+
+            </div>
+
+
+            {/* Password */}
+
+            <div className="register-field">
+
+              <label htmlFor="password">
+                Password
+              </label>
+
+              <div className="register-password">
+
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create a password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPassword(!showPassword)
+                  }
+                  className="password-button"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+
+              </div>
+
+            </div>
+
+
+            {/* Confirm Password */}
+
+            <div className="register-field">
+
+              <label htmlFor="confirmPassword">
+                Confirm Password
+              </label>
+
+              <div className="register-password">
+
+                <input
+                  id="confirmPassword"
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
+                  name="confirmPassword"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                  className="password-button"
+                >
+                  {showConfirmPassword ? "Hide" : "Show"}
+                </button>
+
+              </div>
+
+            </div>
+
+
+            {/* Register Button */}
+
+            <button
+              type="submit"
+              className="register-button"
             >
-              <option value="">Branch / Department</option>
-              <option value="CSE">
-                Computer Science & Engineering
-              </option>
-              <option value="AIML">
-                Artificial Intelligence & Machine Learning
-              </option>
-              <option value="ECE">
-                Electronics & Communication Engineering
-              </option>
-              <option value="EEE">
-                Electrical & Electronics Engineering
-              </option>
-              <option value="MECH">
-                Mechanical Engineering
-              </option>
-              <option value="CIVIL">
-                Civil Engineering
-              </option>
-              <option value="IT">
-                Information Technology
-              </option>
-            </select>
+              Create Account
+            </button>
 
-            <span className="dropdown-arrow">⌄</span>
+          </form>
+
+
+          {/* Login */}
+
+          <div className="register-divider">
+            <span>OR</span>
           </div>
 
-          {/* Phone */}
-          <div className="input-box">
-            <span className="input-icon">📞</span>
+          <div className="existing-account">
 
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-
-            <span className="example">
-              e.g. 9876543210
+            <span>
+              Already have an account?
             </span>
+
+            <Link to="/login">
+              Sign in
+            </Link>
+
           </div>
 
-          {/* Password */}
-          <div className="input-box">
-            <span className="input-icon">🔒</span>
-
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-
-            <span className="eye-icon">👁</span>
-          </div>
-
-          {/* Confirm Password */}
-          <div className="input-box">
-            <span className="input-icon">🔒</span>
-
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
-
-            <span className="eye-icon">👁</span>
-          </div>
-
-          {/* Register Button */}
-          <button type="submit" className="register-btn">
-            REGISTER
-            <span>→</span>
-          </button>
-
-        </form>
-
-        {/* Login */}
-        <div className="login-section">
-
-          <div className="or-section">
-            <span></span>
-            <p>OR</p>
-            <span></span>
-          </div>
-
-          <p>
-            Already have an account?
-            <a href="/login"> Login</a>
-          </p>
-
-        </div>
-
-        {/* Bottom Text */}
-        <div className="bottom-text">
-          LEARN &nbsp; | &nbsp; INNOVATE &nbsp; | &nbsp; GROW
-        </div>
-
-      </div>
-
-
-      {/* ================= RIGHT SIDE ================= */}
-      <div className="register-right">
-
-        {/* College Name */}
-        <div className="college-heading">
-          <h2>NARASARAOPETA</h2>
-          <h3>ENGINEERING COLLEGE</h3>
-
-          <div className="heading-line"></div>
-
-          <p>
-            A BRIGHTER CAMPUS <span>TOGETHER</span>
-          </p>
-        </div>
-
-
-        {/* Features */}
-        <div className="features">
-
-          <div className="feature">
-            <div className="feature-icon">📅</div>
-            <h4>PLAN</h4>
-          </div>
-
-          <div className="feature">
-            <div className="feature-icon">👥</div>
-            <h4>BOOK</h4>
-          </div>
-
-          <div className="feature">
-            <div className="feature-icon">⚙</div>
-            <h4>MANAGE</h4>
-          </div>
-
-          <div className="feature">
-            <div className="feature-icon">🤝</div>
-            <h4>COLLABORATE</h4>
-          </div>
-
-        </div>
-
-
-        {/* Campus Image */}
-        <div className="campus-image-container">
-
-          {/* <img
-            src="/college-campus.jpg"
-            alt="Narasaraopeta Engineering College Campus"
-            className="campus-image"
-          /> */}
-
-        </div>
-
-
-        {/* Bottom Quote */}
-        <div className="education-box">
-          <p>EDUCATION</p>
-          <p>EMPOWERS</p>
-          <p>TOMORROW</p>
-
-          <div className="small-line"></div>
         </div>
 
       </div>
