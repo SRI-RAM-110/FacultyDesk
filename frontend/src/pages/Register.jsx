@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Register.css";
+import "../styles/Register.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -278,11 +278,11 @@ const Register = () => {
         {/* Campus Image */}
         <div className="campus-image-container">
 
-          <img
+          {/* <img
             src="/college-campus.jpg"
             alt="Narasaraopeta Engineering College Campus"
             className="campus-image"
-          />
+          /> */}
 
         </div>
 

@@ -1,0 +1,749 @@
+/* =========================================
+   REGISTER PAGE
+   ========================================= */
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.register-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+
+  font-family: "Poppins", Arial, sans-serif;
+
+  background: #ffffff;
+}
+
+
+/* =========================================
+   LEFT SIDE
+   ========================================= */
+
+.register-left {
+  width: 50%;
+  height: 100vh;
+
+  padding: 18px 6%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  overflow: hidden;
+
+  background: #ffffff;
+}
+
+
+/* =========================================
+   NEC LOGO
+   ========================================= */
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 2px;
+}
+
+.nec-logo {
+  width: 92px;
+  height: 92px;
+
+  object-fit: contain;
+}
+
+
+/* =========================================
+   HEADING
+   ========================================= */
+
+.register-left h1 {
+  margin: 0;
+
+  font-size: clamp(24px, 2vw, 31px);
+  font-weight: 700;
+
+  color: #202020;
+
+  text-align: center;
+  line-height: 1.2;
+}
+
+.register-left h1 span {
+  color: #a51d91;
+}
+
+.subtitle {
+  margin: 4px 0 14px;
+
+  color: #6d6d78;
+
+  font-size: 14px;
+
+  text-align: center;
+}
+
+
+/* =========================================
+   FORM
+   ========================================= */
+
+.register-form {
+  width: 100%;
+  max-width: 525px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+/* =========================================
+   INPUT
+   ========================================= */
+
+.input-box {
+  width: 100%;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  border: 1px solid #d9d9df;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  transition: 0.2s ease;
+}
+
+.input-box:focus-within {
+  border-color: #ae279c;
+
+  box-shadow:
+    0 0 0 3px rgba(174, 39, 156, 0.08);
+}
+
+
+/* INPUT ICON */
+
+.input-icon {
+  width: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  font-size: 17px;
+  color: #666b75;
+}
+
+
+/* INPUT */
+
+.input-box input,
+.input-box select {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #42444b;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  padding: 0 12px 0 0;
+}
+
+.input-box input::placeholder {
+  color: #8c8e97;
+}
+
+
+/* =========================================
+   SELECT
+   ========================================= */
+
+.input-box select {
+  appearance: none;
+  -webkit-appearance: none;
+
+  cursor: pointer;
+
+  color: #777983;
+}
+
+.dropdown-arrow {
+  position: absolute;
+
+  right: 15px;
+
+  color: #6d7078;
+
+  font-size: 18px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   EXAMPLE
+   ========================================= */
+
+.example {
+  margin-right: 14px;
+
+  color: #999ba3;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   PASSWORD EYE
+   ========================================= */
+
+.eye-icon {
+  margin-right: 14px;
+
+  color: #6d7078;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   REGISTER BUTTON
+   ========================================= */
+
+.register-btn {
+  width: 100%;
+  height: 49px;
+
+  margin-top: 4px;
+
+  border: none;
+  border-radius: 25px;
+
+  background: linear-gradient(
+    90deg,
+    #8d218c,
+    #c42a9d
+  );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 17px;
+
+  transition: 0.25s ease;
+}
+
+.register-btn span {
+  font-size: 24px;
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(154, 35, 145, 0.25);
+}
+
+
+/* =========================================
+   LOGIN
+   ========================================= */
+
+.login-section {
+  width: 100%;
+  max-width: 525px;
+
+  text-align: center;
+}
+
+
+/* OR */
+
+.or-section {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin: 10px 0 7px;
+}
+
+.or-section span {
+  height: 1px;
+
+  background: #dedee3;
+
+  flex: 1;
+}
+
+.or-section p {
+  margin: 0;
+
+  color: #8b8c94;
+
+  font-size: 12px;
+}
+
+
+/* LOGIN TEXT */
+
+.login-section > p {
+  margin: 0;
+
+  color: #5f6169;
+
+  font-size: 14px;
+}
+
+.login-section a {
+  color: #a51d91;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  margin-left: 5px;
+}
+
+.login-section a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   BOTTOM TEXT
+   ========================================= */
+
+.bottom-text {
+  margin-top: auto;
+
+  padding-top: 7px;
+
+  color: #656771;
+
+  font-size: 9px;
+
+  font-weight: 500;
+
+  letter-spacing: 4px;
+}
+
+
+/* =========================================
+   RIGHT SIDE
+   ========================================= */
+
+.register-right {
+  width: 50%;
+  height: 100vh;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: #f7f2ff;
+  background-image: url(./public/college-campus.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 5px solid #c129a0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* =========================================
+   COLLEGE HEADING
+   ========================================= */
+
+.college-heading {
+  width: 90%;
+
+  text-align: center;
+
+  padding-top: 35px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.college-heading h2 {
+  margin: 0;
+
+  color: #4d177c;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(26px, 2.5vw, 36px);
+
+  letter-spacing: 1px;
+
+  font-weight: 700;
+}
+
+.college-heading h3 {
+  margin: 3px 0 11px;
+
+  color: #282b35;
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  letter-spacing: 1px;
+}
+
+.heading-line {
+  width: 60px;
+  height: 3px;
+
+  background: #c129a0;
+
+  margin: 0 auto 17px;
+}
+
+.college-heading p {
+  margin: 0;
+
+  color: #3c3d47;
+
+  font-size: clamp(16px, 1.5vw, 21px);
+
+  font-weight: 500;
+
+  letter-spacing: 1px;
+}
+
+.college-heading p span {
+  color: #bf299e;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   FEATURES
+   ========================================= */
+
+.features {
+  width: 82%;
+
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 23px;
+
+  position: relative;
+
+  z-index: 3;
+}
+
+.feature {
+  width: 90px;
+
+  text-align: center;
+}
+
+.feature-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 5px;
+
+  border-radius: 50%;
+  border: 1px solid black;
+
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(174, 45, 163, 0.12);
+
+  color: #7e218d;
+
+  font-size: 23px;
+}
+
+.feature:nth-child(2) .feature-icon,
+.feature:nth-child(4) .feature-icon {
+  color: #c52b9f;
+
+  background: rgba(215, 62, 168, 0.13);
+}
+
+.feature h4 {
+  margin: 0;
+
+  color: #76207f;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   CAMPUS IMAGE
+   ========================================= */
+
+.campus-image-container {
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 57%;
+
+  overflow: hidden;
+}
+
+.campus-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center center;
+}
+
+
+/* =========================================
+   EDUCATION BOX
+   ========================================= */
+
+.education-box {
+  position: absolute;
+
+  right: 25px;
+  bottom: 22px;
+
+  z-index: 5;
+
+  padding: 12px 17px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  border-radius: 3px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.education-box p {
+  margin: 0;
+
+  color: #35343b;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  line-height: 1.45;
+}
+
+.small-line {
+  width: 28px;
+  height: 3px;
+
+  background: #9b238d;
+
+  margin-top: 6px;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1100px) {
+
+  .register-left {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .college-heading {
+    padding-top: 30px;
+  }
+
+  .college-heading h2 {
+    font-size: 28px;
+  }
+
+  .college-heading h3 {
+    font-size: 16px;
+  }
+
+  .college-heading p {
+    font-size: 16px;
+  }
+
+  .features {
+    width: 90%;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+  .register-page {
+    height: auto;
+
+    min-height: 100vh;
+
+    overflow-y: auto;
+
+    flex-direction: column;
+  }
+
+  .register-left {
+    width: 100%;
+
+    height: auto;
+
+    min-height: 100vh;
+
+    padding: 25px 20px 30px;
+
+    overflow: visible;
+  }
+
+  .register-right {
+    width: 100%;
+
+    height: 700px;
+
+    min-height: 700px;
+  }
+
+  .nec-logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .register-left h1 {
+    font-size: 25px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .register-form {
+    max-width: 100%;
+  }
+
+  .login-section {
+    max-width: 100%;
+  }
+
+  .bottom-text {
+    margin-top: 25px;
+  }
+
+  .college-heading h2 {
+    font-size: 27px;
+  }
+
+  .college-heading h3 {
+    font-size: 15px;
+  }
+
+  .college-heading p {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 480px) {
+
+  .register-left {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .register-left h1 {
+    font-size: 22px;
+  }
+
+  .example {
+    display: none;
+  }
+
+  .input-box {
+    height: 48px;
+  }
+
+  .register-btn {
+    height: 50px;
+  }
+
+  .college-heading h2 {
+    font-size: 23px;
+  }
+
+  .college-heading h3 {
+    font-size: 13px;
+  }
+
+  .college-heading p {
+    font-size: 14px;
+  }
+}

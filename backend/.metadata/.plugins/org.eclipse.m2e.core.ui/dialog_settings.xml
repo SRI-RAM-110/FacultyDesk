@@ -2,7 +2,11 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+<<<<<<< HEAD
 			<item value="D:\Documents\ProgrammingFiles\FullStack\FacultyDesk\backend"/>
+=======
+			<item value="C:\Users\srira\Desktop\FacultyDesk\backend"/>
+>>>>>>> 0a7c6da42e61f005f5a13a028a0cf24aa73911a4
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
