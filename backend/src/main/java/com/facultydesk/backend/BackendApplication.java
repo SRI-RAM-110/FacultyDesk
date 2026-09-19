@@ -1,4 +1,4 @@
-package com.facultydesk;
+package com.facultydesk.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
