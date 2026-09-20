@@ -39,12 +39,15 @@ public class SecurityConfig {
     ) throws Exception {
 
         http
+            // Disable CSRF because we are using JWT authentication
             .csrf(csrf -> csrf.disable())
 
+            // Enable CORS
             .cors(cors ->
                 cors.configurationSource(corsConfigurationSource())
             )
 
+            // JWT authentication is stateless
             .sessionManagement(session ->
                 session.sessionCreationPolicy(
                     SessionCreationPolicy.STATELESS
@@ -53,20 +56,36 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                // Authentication endpoints
+                // ==============================
+                // AUTHENTICATION
+                // ==============================
+
                 .requestMatchers(
                     "/api/auth/register",
-                    "/api/auth/login",
-                    "/api/transport/**"
+                    "/api/auth/login"
                 ).permitAll()
 
-                // CORS preflight
+                // ==============================
+                // CORS PREFLIGHT
+                // ==============================
+
                 .requestMatchers(
                     HttpMethod.OPTIONS,
                     "/**"
                 ).permitAll()
 
-                // Seminar hall endpoints
+                // ==============================
+                // TRANSPORT
+                // ==============================
+
+                .requestMatchers(
+                    "/api/transport/**"
+                ).permitAll()
+
+                // ==============================
+                // SEMINAR HALL
+                // ==============================
+
                 .requestMatchers(
                     HttpMethod.GET,
                     "/api/seminar/halls"
@@ -82,10 +101,37 @@ public class SecurityConfig {
                     "/api/seminar/bookings"
                 ).authenticated()
 
-                // Everything else
+                // ==============================
+                // ACCOMMODATION ROOMS
+                // ==============================
+
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/accommodation/rooms"
+                ).authenticated()
+
+                // ==============================
+                // ACCOMMODATION REQUESTS
+                // ==============================
+
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/api/accommodation/requests"
+                ).authenticated()
+
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/accommodation/requests/**"
+                ).authenticated()
+
+                // ==============================
+                // EVERYTHING ELSE
+                // ==============================
+
                 .anyRequest().authenticated()
             )
 
+            // JWT filter
             .addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
@@ -101,21 +147,21 @@ public class SecurityConfig {
                 new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+            List.of("http://localhost:5173")
         );
 
         configuration.setAllowedMethods(
-                List.of(
-                    "GET",
-                    "POST",
-                    "PUT",
-                    "DELETE",
-                    "OPTIONS"
-                )
+            List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+            )
         );
 
         configuration.setAllowedHeaders(
-                List.of("*")
+            List.of("*")
         );
 
         configuration.setAllowCredentials(true);
@@ -124,8 +170,8 @@ public class SecurityConfig {
                 new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration(
-                "/**",
-                configuration
+            "/**",
+            configuration
         );
 
         return source;

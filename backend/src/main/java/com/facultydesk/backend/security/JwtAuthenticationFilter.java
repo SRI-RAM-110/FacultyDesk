@@ -38,8 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
+        System.out.println(
+                "JWT FILTER: " +
+                request.getMethod() +
+                " " +
+                request.getRequestURI()
+        );
+
         if (authHeader == null ||
                 !authHeader.startsWith("Bearer ")) {
+
+            System.out.println("JWT FILTER: No Bearer token");
 
             filterChain.doFilter(request, response);
             return;
@@ -48,37 +57,76 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
         try {
-            if (jwtService.isTokenValid(token)) {
 
-                String email = jwtService.extractEmail(token);
+            if (!jwtService.isTokenValid(token)) {
 
-                Faculty faculty = facultyRepository
-                        .findByEmail(email)
-                        .orElse(null);
+                System.out.println(
+                        "JWT FILTER: Token is invalid"
+                );
 
-                if (faculty != null &&
-                        SecurityContextHolder
-                                .getContext()
-                                .getAuthentication() == null) {
-
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    faculty,
-                                    null,
-                                    List.of(
-                                            new SimpleGrantedAuthority(
-                                                    "ROLE_" + faculty.getRole()
-                                            )
-                                    )
-                            );
-
-                    SecurityContextHolder
-                            .getContext()
-                            .setAuthentication(authentication);
-                }
+                filterChain.doFilter(request, response);
+                return;
             }
-        } catch (Exception ignored) {
-            // Invalid token will simply remain unauthenticated
+
+            String email =
+                    jwtService.extractEmail(token);
+
+            System.out.println(
+                    "JWT FILTER: Email = " + email
+            );
+
+            Faculty faculty =
+                    facultyRepository
+                            .findByEmail(email)
+                            .orElse(null);
+
+            if (faculty == null) {
+
+                System.out.println(
+                        "JWT FILTER: Faculty not found"
+                );
+
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if (SecurityContextHolder
+                    .getContext()
+                    .getAuthentication() == null) {
+
+                String role =
+                        faculty.getRole();
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                faculty,
+                                null,
+                                List.of(
+                                        new SimpleGrantedAuthority(
+                                                "ROLE_" + role
+                                        )
+                                )
+                        );
+
+                SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(
+                                authentication
+                        );
+
+                System.out.println(
+                        "JWT FILTER: Authentication successful - "
+                        + faculty.getEmail()
+                        + " ROLE_" + role
+                );
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "JWT FILTER ERROR: "
+                    + e.getMessage()
+            );
         }
 
         filterChain.doFilter(request, response);

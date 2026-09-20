@@ -6,6 +6,8 @@ import Transport from "./pages/Transport";
 import TransportRequests from "./pages/TransportRequests";
 import SeminarHall from "./pages/SeminarHall";
 import MySeminarBookings from "./pages/MySeminarBookings";
+import Accommodation from "./pages/Accommodation";
+import MyAccommodationRequests from "./pages/MyAccommodationRequests";
 
 function App() {
   return (
@@ -19,6 +21,11 @@ function App() {
         <Route path="/my-seminar-bookings" element={<MySeminarBookings/>}/>
         <Route path="/transport" element={<Transport />} />
         <Route path="/transport/requests" element={<TransportRequests />}/>
+        <Route path="/accommodation" element={<Accommodation />} />
+        <Route
+  path="/my-accommodation-requests"
+  element={<MyAccommodationRequests />}
+/>
       </Routes>
     </BrowserRouter>
   );
