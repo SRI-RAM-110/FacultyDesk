@@ -4,6 +4,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Transport from "./pages/Transport";
 import TransportRequests from "./pages/TransportRequests";
+import SeminarHall from "./pages/SeminarHall";
+import MySeminarBookings from "./pages/MySeminarBookings";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/seminar-hall" element={<SeminarHall/>}/>
+        <Route path="/my-seminar-bookings" element={<MySeminarBookings/>}/>
         <Route path="/transport" element={<Transport />} />
         <Route path="/transport/requests" element={<TransportRequests />}/>
       </Routes>
