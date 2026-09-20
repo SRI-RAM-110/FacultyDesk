@@ -53,6 +53,13 @@ function Dashboard() {
       color: "purple",
     },
     {
+      icon: "⚒",
+      title: "Accomudation",
+      subtitle: "Request",
+      description: "Raise a Accomudation request for department facilities.",
+      color: "purple",
+    },
+    {
       icon: "▥",
       title: "Academic",
       subtitle: "Resources",
