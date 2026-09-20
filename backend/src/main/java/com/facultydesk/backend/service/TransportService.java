@@ -1,10 +1,12 @@
 package com.facultydesk.backend.service;
 
 import com.facultydesk.backend.dto.TransportRequestDto;
+import com.facultydesk.backend.dto.TransportRequestResponseDto;
 import com.facultydesk.backend.entity.Bus;
 import com.facultydesk.backend.entity.TransportRequest;
 import com.facultydesk.backend.repository.BusRepository;
 import com.facultydesk.backend.repository.TransportRequestRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,124 +22,193 @@ public class TransportService {
 
     public TransportService(
             BusRepository busRepository,
-            TransportRequestRepository transportRequestRepository
-    ) {
+            TransportRequestRepository transportRequestRepository) {
+
         this.busRepository = busRepository;
         this.transportRequestRepository = transportRequestRepository;
     }
 
-
-    // =====================================================
-    // CHECK AVAILABLE BUSES
-    // =====================================================
+    // =========================================================
+    // CHECK AVAILABLE VEHICLES
+    // =========================================================
 
     public List<Bus> getAvailableBuses(
             String date,
             String time,
             Integer passengers,
-            String vehiclePreference
-    ) {
+            String vehiclePreference) {
 
-        LocalDate departureDate = LocalDate.parse(date);
-        LocalTime departureTime = LocalTime.parse(time);
+        // ---------- Basic validation ----------
+
+        if (date == null || date.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Departure date is required"
+            );
+        }
+
+        if (time == null || time.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Departure time is required"
+            );
+        }
+
+        if (passengers == null || passengers <= 0) {
+            throw new IllegalArgumentException(
+                    "Passenger count must be greater than zero"
+            );
+        }
+
+        // ---------- Convert date/time ----------
+
+        LocalDate departureDate;
+
+        LocalTime departureTime;
+
+        try {
+
+            departureDate = LocalDate.parse(date);
+            departureTime = LocalTime.parse(time);
+
+        } catch (Exception e) {
+
+            throw new IllegalArgumentException(
+                    "Invalid date or time format"
+            );
+        }
 
         LocalDateTime requestedStart =
-                LocalDateTime.of(departureDate, departureTime);
+                LocalDateTime.of(
+                        departureDate,
+                        departureTime
+                );
 
-        List<Bus> buses = busRepository.findByAvailableTrue();
+        // ---------- Get all active vehicles ----------
+
+        List<Bus> buses =
+                busRepository.findByAvailableTrue();
+
+        // ---------- Get existing bookings ----------
 
         List<TransportRequest> existingRequests =
                 transportRequestRepository.findByStatusNotIn(
-                        List.of("Rejected", "Cancelled")
+                        List.of(
+                                "Rejected",
+                                "Cancelled"
+                        )
                 );
 
+        // ---------- Filter vehicles ----------
+
         return buses.stream()
-                .filter(bus -> bus.getCapacity() >= passengers)
-                .filter(bus -> matchesVehiclePreference(
-                        bus,
-                        vehiclePreference
-                ))
-                .filter(bus -> isBusAvailable(
-                        bus,
-                        requestedStart,
-                        existingRequests
-                ))
+
+                // Capacity check
+                .filter(bus ->
+                        bus.getCapacity() >= passengers
+                )
+
+                // Vehicle preference check
+                .filter(bus ->
+                        matchesVehiclePreference(
+                                bus,
+                                vehiclePreference
+                        )
+                )
+
+                // Date/time availability check
+                .filter(bus ->
+                        isBusAvailable(
+                                bus,
+                                requestedStart,
+                                existingRequests
+                        )
+                )
+
                 .toList();
     }
 
 
-    // =====================================================
+    // =========================================================
     // VEHICLE PREFERENCE
-    // =====================================================
+    // =========================================================
 
     private boolean matchesVehiclePreference(
             Bus bus,
-            String preference
-    ) {
+            String preference) {
 
+        // Any Available
         if (preference == null ||
-                preference.equalsIgnoreCase("Any Available")) {
+                preference.isBlank() ||
+                preference.equalsIgnoreCase(
+                        "Any Available")) {
 
             return true;
         }
 
+        String vehicleType =
+                bus.getVehicleType() != null
+                        ? bus.getVehicleType().toLowerCase()
+                        : "";
+
+        // Bus
         if (preference.equalsIgnoreCase("Bus")) {
 
-            return bus.getVehicleType()
-                    .toLowerCase()
-                    .contains("bus");
+            return vehicleType.contains("bus");
         }
 
-        if (preference.equalsIgnoreCase("Electrical Kart")) {
+        // Electrical Kart
+        if (preference.equalsIgnoreCase(
+                "Electrical Kart")) {
 
-            return bus.getVehicleType()
-                    .toLowerCase()
-                    .contains("kart");
+            return vehicleType.contains("kart");
         }
 
+        // Car
         if (preference.equalsIgnoreCase("Car")) {
 
-            return bus.getVehicleType()
-                    .toLowerCase()
-                    .contains("car");
+            return vehicleType.contains("car");
         }
 
         return true;
     }
 
 
-    // =====================================================
-    // BUS AVAILABILITY
-    // =====================================================
+    // =========================================================
+    // CHECK VEHICLE DATE/TIME AVAILABILITY
+    // =========================================================
 
     private boolean isBusAvailable(
             Bus bus,
             LocalDateTime requestedStart,
-            List<TransportRequest> requests
-    ) {
+            List<TransportRequest> requests) {
 
         for (TransportRequest request : requests) {
 
+            // No vehicle assigned
             if (request.getBusId() == null) {
                 continue;
             }
 
+            // Different vehicle
             if (!request.getBusId().equals(bus.getId())) {
                 continue;
             }
 
+            // Invalid existing request
             if (request.getDepartureDate() == null ||
                     request.getDepartureTime() == null) {
+
                 continue;
             }
 
+            // Existing request start
             LocalDateTime existingStart =
                     LocalDateTime.of(
                             request.getDepartureDate(),
                             request.getDepartureTime()
                     );
 
-            LocalDateTime existingEnd = existingStart.plusHours(4);
+            // Existing request end
+            LocalDateTime existingEnd;
 
             if (request.getReturnDate() != null &&
                     request.getReturnTime() != null) {
@@ -147,17 +218,47 @@ public class TransportService {
                                 request.getReturnDate(),
                                 request.getReturnTime()
                         );
+
+            } else {
+
+                // One-way trip:
+                // assume vehicle is occupied for 4 hours
+
+                existingEnd =
+                        existingStart.plusHours(4);
             }
 
-            if (!requestedStart.isBefore(existingStart) &&
-                    !requestedStart.isAfter(existingEnd)) {
+            // -------------------------------------------------
+            // Check whether requested start falls inside
+            // an existing booking
+            // -------------------------------------------------
+
+            if (!requestedStart.isAfter(existingEnd) &&
+                    !requestedStart.isBefore(existingStart)) {
 
                 return false;
             }
 
+            // -------------------------------------------------
+            // Check whether requested 4-hour window overlaps
+            // an existing booking
+            // -------------------------------------------------
+
+            LocalDateTime requestedEnd =
+                    requestedStart.plusHours(4);
+
             if (requestedStart.isBefore(existingStart) &&
-                    requestedStart.plusHours(4)
-                            .isAfter(existingStart)) {
+                    requestedEnd.isAfter(existingStart)) {
+
+                return false;
+            }
+
+            // -------------------------------------------------
+            // Check reverse overlap
+            // -------------------------------------------------
+
+            if (requestedStart.isBefore(existingEnd) &&
+                    requestedEnd.isAfter(existingStart)) {
 
                 return false;
             }
@@ -167,119 +268,678 @@ public class TransportService {
     }
 
 
-    // =====================================================
+    // =========================================================
     // CREATE TRANSPORT REQUEST
-    // =====================================================
+    // =========================================================
 
     public TransportRequest createRequest(
-            TransportRequestDto dto
-    ) {
+            TransportRequestDto dto) {
 
-        Bus bus = busRepository.findById(dto.getBusId())
-                .orElseThrow(() ->
-                        new RuntimeException("Selected bus not found")
+        // -----------------------------------------------------
+        // Validate DTO
+        // -----------------------------------------------------
+
+        if (dto == null) {
+
+            throw new IllegalArgumentException(
+                    "Transport request data is required"
+            );
+        }
+
+        if (dto.getBusId() == null) {
+
+            throw new IllegalArgumentException(
+                    "Please select a vehicle"
+            );
+        }
+
+        if (dto.getRequestedBy() == null ||
+                dto.getRequestedBy().isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Requested by is required"
+            );
+        }
+
+        if (dto.getDestination() == null ||
+                dto.getDestination().isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Destination is required"
+            );
+        }
+
+        if (dto.getDepartureDate() == null ||
+                dto.getDepartureDate().isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Departure date is required"
+            );
+        }
+
+        if (dto.getDepartureTime() == null ||
+                dto.getDepartureTime().isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Departure time is required"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Find selected vehicle
+        // -----------------------------------------------------
+
+        Bus bus =
+                busRepository.findById(
+                        dto.getBusId()
+                ).orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Selected vehicle not found"
+                        )
                 );
+
+
+        // -----------------------------------------------------
+        // Check whether vehicle is active
+        // -----------------------------------------------------
+
+        if (Boolean.FALSE.equals(
+                bus.getAvailable())) {
+
+            throw new IllegalStateException(
+                    "Selected vehicle is currently unavailable"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Convert date/time
+        // -----------------------------------------------------
+
+        LocalDate departureDate;
+
+        LocalTime departureTime;
+
+        try {
+
+            departureDate =
+                    LocalDate.parse(
+                            dto.getDepartureDate()
+                    );
+
+            departureTime =
+                    LocalTime.parse(
+                            dto.getDepartureTime()
+                    );
+
+        } catch (Exception e) {
+
+            throw new IllegalArgumentException(
+                    "Invalid departure date or time"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Validate return trip
+        // -----------------------------------------------------
+
+        LocalDate returnDate = null;
+
+        LocalTime returnTime = null;
+
+        if ("roundTrip".equalsIgnoreCase(
+                dto.getTripType())) {
+
+            if (dto.getReturnDate() == null ||
+                    dto.getReturnDate().isBlank()) {
+
+                throw new IllegalArgumentException(
+                        "Return date is required for round trip"
+                );
+            }
+
+            if (dto.getReturnTime() == null ||
+                    dto.getReturnTime().isBlank()) {
+
+                throw new IllegalArgumentException(
+                        "Return time is required for round trip"
+                );
+            }
+
+            try {
+
+                returnDate =
+                        LocalDate.parse(
+                                dto.getReturnDate()
+                        );
+
+                returnTime =
+                        LocalTime.parse(
+                                dto.getReturnTime()
+                        );
+
+            } catch (Exception e) {
+
+                throw new IllegalArgumentException(
+                        "Invalid return date or time"
+                );
+            }
+
+            LocalDateTime departure =
+                    LocalDateTime.of(
+                            departureDate,
+                            departureTime
+                    );
+
+            LocalDateTime returnDateTime =
+                    LocalDateTime.of(
+                            returnDate,
+                            returnTime
+                    );
+
+            if (!returnDateTime.isAfter(
+                    departure)) {
+
+                throw new IllegalArgumentException(
+                        "Return date/time must be after departure date/time"
+                );
+            }
+        }
+
+
+        // -----------------------------------------------------
+        // Calculate passenger count
+        // -----------------------------------------------------
+
+        int students =
+                dto.getStudents() != null
+                        ? dto.getStudents()
+                        : 0;
+
+        int faculty =
+                dto.getFaculty() != null
+                        ? dto.getFaculty()
+                        : 0;
+
+        int totalPassengers =
+                students + faculty;
+
+
+        if (totalPassengers <= 0) {
+
+            throw new IllegalArgumentException(
+                    "Total passengers must be greater than zero"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Check vehicle capacity
+        // -----------------------------------------------------
+
+        if (bus.getCapacity() < totalPassengers) {
+
+            throw new IllegalArgumentException(
+                    "Selected vehicle does not have enough capacity"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Final availability check
+        // -----------------------------------------------------
+
+        LocalDateTime requestedStart =
+                LocalDateTime.of(
+                        departureDate,
+                        departureTime
+                );
+
+        List<TransportRequest> existingRequests =
+                transportRequestRepository.findByStatusNotIn(
+                        List.of(
+                                "Rejected",
+                                "Cancelled"
+                        )
+                );
+
+        if (!isBusAvailable(
+                bus,
+                requestedStart,
+                existingRequests
+        )) {
+
+            throw new IllegalStateException(
+                    "Selected vehicle is no longer available for the requested time"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Create entity
+        // -----------------------------------------------------
 
         TransportRequest request =
                 new TransportRequest();
 
-        request.setRequestedBy(dto.getRequestedBy());
-        request.setDepartment(dto.getDepartment());
-        request.setPurpose(dto.getPurpose());
-        request.setTripType(dto.getTripType());
-        request.setSource(dto.getSource());
-        request.setPickupPoint(dto.getPickupPoint());
-        request.setDestination(dto.getDestination());
 
+        // Faculty information
+        request.setRequestedBy(
+                dto.getRequestedBy()
+        );
+
+        request.setDepartment(
+                dto.getDepartment()
+        );
+
+
+        // Trip information
+        request.setPurpose(
+                dto.getPurpose()
+        );
+
+        request.setTripType(
+                dto.getTripType()
+        );
+
+        request.setSource(
+                dto.getSource()
+        );
+
+        request.setPickupPoint(
+                dto.getPickupPoint()
+        );
+
+        request.setDestination(
+                dto.getDestination()
+        );
+
+
+        // Departure
         request.setDepartureDate(
-                LocalDate.parse(dto.getDepartureDate())
+                departureDate
         );
 
         request.setDepartureTime(
-                LocalTime.parse(dto.getDepartureTime())
+                departureTime
         );
 
-        if (dto.getReturnDate() != null &&
-                !dto.getReturnDate().isBlank()) {
 
-            request.setReturnDate(
-                    LocalDate.parse(dto.getReturnDate())
-            );
-        }
+        // Return
+        request.setReturnDate(
+                returnDate
+        );
 
-        if (dto.getReturnTime() != null &&
-                !dto.getReturnTime().isBlank()) {
+        request.setReturnTime(
+                returnTime
+        );
 
-            request.setReturnTime(
-                    LocalTime.parse(dto.getReturnTime())
-            );
-        }
 
-        request.setStudents(dto.getStudents());
-        request.setFacultyCount(dto.getFaculty());
-        request.setTotalPassengers(dto.getTotalPassengers());
+        // Passenger information
+        request.setStudents(
+                students
+        );
 
+        request.setFacultyCount(
+                faculty
+        );
+
+        request.setTotalPassengers(
+                totalPassengers
+        );
+
+
+        // Vehicle preference
         request.setVehiclePreference(
                 dto.getVehiclePreference()
         );
 
-        request.setBusId(bus.getId());
-        request.setBusNumber(bus.getBusNumber());
-        request.setVehicleType(bus.getVehicleType());
-        request.setDriverName(bus.getDriverName());
-        request.setDriverPhone(bus.getDriverPhone());
 
+        // -----------------------------------------------------
+        // Vehicle information
+        //
+        // IMPORTANT:
+        // We get these values from database instead of
+        // trusting frontend values.
+        // -----------------------------------------------------
+
+        request.setBusId(
+                bus.getId()
+        );
+
+        request.setBusNumber(
+                bus.getBusNumber()
+        );
+
+        request.setVehicleType(
+                bus.getVehicleType()
+        );
+
+        request.setDriverName(
+                bus.getDriverName()
+        );
+
+        request.setDriverPhone(
+                bus.getDriverPhone()
+        );
+
+
+        // Additional information
         request.setAdditionalInfo(
                 dto.getAdditionalInfo()
         );
 
-        request.setStatus("Pending");
 
-        return transportRequestRepository.save(request);
+        // -----------------------------------------------------
+        // Default status
+        // -----------------------------------------------------
+
+        request.setStatus(
+                "Pending"
+        );
+
+
+        // -----------------------------------------------------
+        // Save to database
+        // -----------------------------------------------------
+
+        return transportRequestRepository.save(
+                request
+        );
     }
 
 
-    // =====================================================
-    // GET ALL REQUESTS
-    // =====================================================
+    // =========================================================
+    // GET ALL TRANSPORT REQUESTS
+    // =========================================================
 
-    public List<TransportRequest> getAllRequests() {
+    public List<TransportRequestResponseDto>
+    getAllRequests() {
 
         return transportRequestRepository
-                .findAllByOrderByIdDesc();
+                .findAllByOrderByIdDesc()
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
 
-    // =====================================================
-    // GET REQUEST BY ID
-    // =====================================================
+    // =========================================================
+    // GET TRANSPORT REQUEST BY ID
+    // =========================================================
 
-    public TransportRequest getRequestById(Long id) {
+    public TransportRequestResponseDto
+    getRequestById(Long id) {
 
-        return transportRequestRepository
-                .findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Transport request not found"
-                        )
+        TransportRequest request =
+                transportRequestRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "Transport request not found with id: "
+                                                + id
+                                )
+                        );
+
+        return toResponseDto(request);
+    }
+
+
+    // =========================================================
+    // UPDATE REQUEST STATUS
+    // =========================================================
+
+    public TransportRequest updateStatus(
+            Long id,
+            String status) {
+
+        // IMPORTANT:
+        // Don't call getRequestById() here because that method
+        // returns DTO.
+        //
+        // Directly fetch the Entity from repository.
+
+        TransportRequest request =
+                transportRequestRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new IllegalArgumentException(
+                                        "Transport request not found with id: "
+                                                + id
+                                )
+                        );
+
+
+        // -----------------------------------------------------
+        // Validate status
+        // -----------------------------------------------------
+
+        if (status == null ||
+                status.isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Status is required"
+            );
+        }
+
+
+        String normalizedStatus =
+                status.trim();
+
+
+        if (!isValidStatus(
+                normalizedStatus
+        )) {
+
+            throw new IllegalArgumentException(
+                    "Invalid status. Allowed values: "
+                            + "Pending, Approved, Rejected, Cancelled"
+            );
+        }
+
+
+        // -----------------------------------------------------
+        // Update
+        // -----------------------------------------------------
+
+        request.setStatus(
+                normalizedStatus
+        );
+
+
+        return transportRequestRepository.save(
+                request
+        );
+    }
+
+
+    // =========================================================
+    // VALID STATUS
+    // =========================================================
+
+    private boolean isValidStatus(
+            String status) {
+
+        return status.equalsIgnoreCase(
+                    "Pending"
+                )
+                ||
+                status.equalsIgnoreCase(
+                    "Approved"
+                )
+                ||
+                status.equalsIgnoreCase(
+                    "Rejected"
+                )
+                ||
+                status.equalsIgnoreCase(
+                    "Cancelled"
                 );
     }
 
 
-    // =====================================================
-    // UPDATE STATUS
-    // =====================================================
+    // =========================================================
+    // CONVERT ENTITY → RESPONSE DTO
+    // =========================================================
 
-    public TransportRequest updateStatus(
-            Long id,
-            String status
-    ) {
+    private TransportRequestResponseDto
+    toResponseDto(
+            TransportRequest request) {
 
-        TransportRequest request =
-                getRequestById(id);
+        TransportRequestResponseDto dto =
+                new TransportRequestResponseDto();
 
-        request.setStatus(status);
 
-        return transportRequestRepository.save(request);
+        // -----------------------------------------------------
+        // Basic information
+        // -----------------------------------------------------
+
+        dto.setId(
+                request.getId()
+        );
+
+        dto.setRequestedBy(
+                request.getRequestedBy()
+        );
+
+        dto.setDepartment(
+                request.getDepartment()
+        );
+
+        dto.setPurpose(
+                request.getPurpose()
+        );
+
+        dto.setTripType(
+                request.getTripType()
+        );
+
+
+        // -----------------------------------------------------
+        // Route
+        // -----------------------------------------------------
+
+        dto.setSource(
+                request.getSource()
+        );
+
+        dto.setPickupPoint(
+                request.getPickupPoint()
+        );
+
+        dto.setDestination(
+                request.getDestination()
+        );
+
+
+        // -----------------------------------------------------
+        // Departure
+        // -----------------------------------------------------
+
+        dto.setDepartureDate(
+                request.getDepartureDate() != null
+                        ? request.getDepartureDate().toString()
+                        : null
+        );
+
+        dto.setDepartureTime(
+                request.getDepartureTime() != null
+                        ? request.getDepartureTime().toString()
+                        : null
+        );
+
+
+        // -----------------------------------------------------
+        // Return
+        // -----------------------------------------------------
+
+        dto.setReturnDate(
+                request.getReturnDate() != null
+                        ? request.getReturnDate().toString()
+                        : null
+        );
+
+        dto.setReturnTime(
+                request.getReturnTime() != null
+                        ? request.getReturnTime().toString()
+                        : null
+        );
+
+
+        // -----------------------------------------------------
+        // Passenger information
+        // -----------------------------------------------------
+
+        dto.setStudents(
+                request.getStudents()
+        );
+
+        // IMPORTANT:
+        //
+        // Entity field:
+        // facultyCount
+        //
+        // Frontend expects:
+        // faculty
+
+        dto.setFaculty(
+                request.getFacultyCount()
+        );
+
+        dto.setTotalPassengers(
+                request.getTotalPassengers()
+        );
+
+
+        // -----------------------------------------------------
+        // Vehicle
+        // -----------------------------------------------------
+
+        dto.setVehiclePreference(
+                request.getVehiclePreference()
+        );
+
+        dto.setBusId(
+                request.getBusId()
+        );
+
+        dto.setBusNumber(
+                request.getBusNumber()
+        );
+
+        dto.setVehicleType(
+                request.getVehicleType()
+        );
+
+        dto.setDriverName(
+                request.getDriverName()
+        );
+
+        dto.setDriverPhone(
+                request.getDriverPhone()
+        );
+
+
+        // -----------------------------------------------------
+        // Additional information
+        // -----------------------------------------------------
+
+        dto.setAdditionalInfo(
+                request.getAdditionalInfo()
+        );
+
+
+        // -----------------------------------------------------
+        // Status
+        // -----------------------------------------------------
+
+        dto.setStatus(
+                request.getStatus()
+        );
+
+
+        return dto;
     }
 }

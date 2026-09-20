@@ -1,9 +1,11 @@
 package com.facultydesk.backend.controller;
 
 import com.facultydesk.backend.dto.TransportRequestDto;
+import com.facultydesk.backend.dto.TransportRequestResponseDto;
 import com.facultydesk.backend.entity.Bus;
 import com.facultydesk.backend.entity.TransportRequest;
 import com.facultydesk.backend.service.TransportService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +25,9 @@ public class TransportController {
     }
 
 
-    // =====================================================
-    // CHECK AVAILABLE VEHICLES
-    // =====================================================
+    // ==========================================
+    // AVAILABLE VEHICLES
+    // ==========================================
 
     @GetMapping("/available")
     public ResponseEntity<List<Bus>> getAvailableBuses(
@@ -43,21 +45,20 @@ public class TransportController {
 
     ) {
 
-        List<Bus> buses =
+        return ResponseEntity.ok(
                 transportService.getAvailableBuses(
                         date,
                         time,
                         passengers,
                         vehiclePreference
-                );
-
-        return ResponseEntity.ok(buses);
+                )
+        );
     }
 
 
-    // =====================================================
-    // CREATE TRANSPORT REQUEST
-    // =====================================================
+    // ==========================================
+    // CREATE REQUEST
+    // ==========================================
 
     @PostMapping("/request")
     public ResponseEntity<TransportRequest> createRequest(
@@ -66,20 +67,20 @@ public class TransportController {
 
     ) {
 
-        TransportRequest request =
-                transportService.createRequest(dto);
-
-        return ResponseEntity.ok(request);
+        return ResponseEntity.ok(
+                transportService.createRequest(dto)
+        );
     }
 
 
-    // =====================================================
-    // GET ALL REQUESTS
-    // =====================================================
+    // ==========================================
+    // GET ALL TRANSPORT REQUESTS
+    // ==========================================
 
     @GetMapping("/requests")
-    public ResponseEntity<List<TransportRequest>>
-    getAllRequests() {
+    public ResponseEntity<
+            List<TransportRequestResponseDto>
+            > getAllRequests() {
 
         return ResponseEntity.ok(
                 transportService.getAllRequests()
@@ -87,14 +88,17 @@ public class TransportController {
     }
 
 
-    // =====================================================
+    // ==========================================
     // GET REQUEST BY ID
-    // =====================================================
+    // ==========================================
 
     @GetMapping("/requests/{id}")
-    public ResponseEntity<TransportRequest>
-    getRequestById(
+    public ResponseEntity<
+            TransportRequestResponseDto
+            > getRequestById(
+
             @PathVariable Long id
+
     ) {
 
         return ResponseEntity.ok(
@@ -103,13 +107,14 @@ public class TransportController {
     }
 
 
-    // =====================================================
+    // ==========================================
     // UPDATE STATUS
-    // =====================================================
+    // ==========================================
 
     @PutMapping("/requests/{id}/status")
-    public ResponseEntity<TransportRequest>
-    updateStatus(
+    public ResponseEntity<
+            TransportRequest
+            > updateStatus(
 
             @PathVariable Long id,
 
