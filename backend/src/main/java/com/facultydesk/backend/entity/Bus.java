@@ -1,15 +1,9 @@
 package com.facultydesk.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "buses")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Bus {
 
     @Id
@@ -31,4 +25,87 @@ public class Bus {
 
     @Column(nullable = false)
     private Boolean available = true;
+
+    // Required by JPA
+    public Bus() {
+    }
+
+    // Constructor for creating buses
+    public Bus(
+            Long id,
+            String busNumber,
+            String vehicleType,
+            Integer capacity,
+            String driverName,
+            String driverPhone,
+            Boolean available
+    ) {
+        this.id = id;
+        this.busNumber = busNumber;
+        this.vehicleType = vehicleType;
+        this.capacity = capacity;
+        this.driverName = driverName;
+        this.driverPhone = driverPhone;
+        this.available = available;
+    }
+
+    // Getters
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getBusNumber() {
+        return busNumber;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public String getDriverPhone() {
+        return driverPhone;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    // Setters
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setBusNumber(String busNumber) {
+        this.busNumber = busNumber;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public void setDriverPhone(String driverPhone) {
+        this.driverPhone = driverPhone;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
 }
