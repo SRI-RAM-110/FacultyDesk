@@ -4,15 +4,12 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Transport from "./pages/Transport";
 import TransportRequests from "./pages/TransportRequests";
-<<<<<<< HEAD
 import Maintenance from "./pages/Maintenance";
 import MaintenanceRequests from "./pages/MaintenanceRequests";
-=======
 import SeminarHall from "./pages/SeminarHall";
 import MySeminarBookings from "./pages/MySeminarBookings";
 import Accommodation from "./pages/Accommodation";
 import MyAccommodationRequests from "./pages/MyAccommodationRequests";
->>>>>>> de16855c6754e01987cd47f30313fc889c5da0ad
 
 function App() {
   return (
@@ -21,13 +18,11 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-<<<<<<< HEAD
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transport" element={<Transport />} />
         <Route path="/transport/requests" element={<TransportRequests />} />
         <Route path="/maintenance" element={<Maintenance />}/>
         <Route path="/maintenance/requests" element={<MaintenanceRequests />}/>
-=======
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/seminar-hall" element={<SeminarHall/>}/>
         <Route path="/my-seminar-bookings" element={<MySeminarBookings/>}/>
@@ -38,7 +33,6 @@ function App() {
   path="/my-accommodation-requests"
   element={<MyAccommodationRequests />}
 />
->>>>>>> de16855c6754e01987cd47f30313fc889c5da0ad
       </Routes>
     </BrowserRouter>
   );
