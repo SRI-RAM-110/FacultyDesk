@@ -37,53 +37,38 @@ public class SecurityConfig {
             HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable())
 
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .cors(cors ->
+                cors.configurationSource(corsConfigurationSource())
+            )
 
-                .sessionManagement(session -> session.sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS))
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
+            )
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Authentication endpoints
-                        .requestMatchers(
-                                "/api/auth/register",
-                                "/api/auth/login",
-                                "/api/transport/**")
-                        .permitAll()
+                // Authentication endpoints
+                .requestMatchers(
+                    "/api/auth/register",
+                    "/api/auth/login",
+                    "/api/transport/**"
+                ).permitAll()
 
-                        // Maintenance - logged-in users can create/view
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/api/maintenance/request")
-                        .authenticated()
+                // CORS preflight
+                .requestMatchers(
+                    HttpMethod.OPTIONS,
+                    "/**"
+                ).permitAll()
 
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/maintenance/requests",
-                                "/api/maintenance/requests/**")
-                        .authenticated()
-
-                        // Only maintenance/admin users can change status
-                        .requestMatchers(
-                                HttpMethod.PUT,
-                                "/api/maintenance/requests/*/status")
-                        .hasAnyRole(
-                                "ADMIN",
-                                "MAINTENANCE")
-
-                        // CORS preflight
-                        .requestMatchers(
-                                HttpMethod.OPTIONS,
-                                "/**")
-                        .permitAll()
-
-                        // Seminar hall endpoints
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/seminar/halls")
-                        .authenticated()
+                // Seminar hall endpoints
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/seminar/halls"
+                ).authenticated()
 
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -95,12 +80,14 @@ public class SecurityConfig {
                                 "/api/seminar/bookings")
                         .authenticated()
 
-                        // Everything else
-                        .anyRequest().authenticated())
+                // Everything else
+                .anyRequest().authenticated()
+            )
 
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
@@ -111,18 +98,22 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173"));
+                List.of("http://localhost:5173")
+        );
 
         configuration.setAllowedMethods(
                 List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"));
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "DELETE",
+                    "OPTIONS"
+                )
+        );
 
         configuration.setAllowedHeaders(
-                List.of("*"));
+                List.of("*")
+        );
 
         configuration.setAllowCredentials(true);
 
@@ -130,7 +121,8 @@ public class SecurityConfig {
 
         source.registerCorsConfiguration(
                 "/**",
-                configuration);
+                configuration
+        );
 
         return source;
     }

@@ -39,16 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        System.out.println(
-                "Authorization Header: " + authHeader
-        );
-
         if (authHeader == null ||
                 !authHeader.startsWith("Bearer ")) {
-
-            System.out.println(
-                    "No valid Authorization header found."
-            );
 
             filterChain.doFilter(request, response);
             return;
@@ -57,80 +49,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
         try {
+            if (jwtService.isTokenValid(token)) {
 
-            if (!jwtService.isTokenValid(token)) {
+                String email = jwtService.extractEmail(token);
 
-                System.out.println(
-                        "JWT token is INVALID or EXPIRED."
-                );
+                Faculty faculty = facultyRepository
+                        .findByEmail(email)
+                        .orElse(null);
 
-                filterChain.doFilter(request, response);
-                return;
+                if (faculty != null &&
+                        SecurityContextHolder
+                                .getContext()
+                                .getAuthentication() == null) {
+
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    faculty,
+                                    null,
+                                    List.of(
+                                            new SimpleGrantedAuthority(
+                                                    "ROLE_" + faculty.getRole()
+                                            )
+                                    )
+                            );
+
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authentication);
+                }
             }
-
-            String email = jwtService.extractEmail(token);
-
-            System.out.println(
-                    "JWT Email: " + email
-            );
-
-            Faculty faculty = facultyRepository
-                    .findByEmail(email)
-                    .orElse(null);
-
-            if (faculty == null) {
-
-                System.out.println(
-                        "No faculty found for email: " + email
-                );
-
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            System.out.println(
-                    "Faculty Found: " + faculty.getName()
-            );
-
-            System.out.println(
-                    "Faculty Role: " + faculty.getRole()
-            );
-
-            if (SecurityContextHolder
-                    .getContext()
-                    .getAuthentication() == null) {
-
-                String role = faculty.getRole();
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                faculty,
-                                null,
-                                List.of(
-                                        new SimpleGrantedAuthority(
-                                                "ROLE_" + role
-                                        )
-                                )
-                        );
-
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authentication);
-
-                System.out.println(
-                        "Authentication SUCCESS for: "
-                                + faculty.getEmail()
-                );
-            }
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    "JWT Authentication Error: "
-                            + e.getMessage()
-            );
-
-            e.printStackTrace();
+        } catch (Exception ignored) {
+            // Invalid token will simply remain unauthenticated
         }
 
         filterChain.doFilter(request, response);
