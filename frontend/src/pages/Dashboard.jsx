@@ -76,6 +76,7 @@ function Dashboard() {
       description:
         "Request and manage stationery items and essential office supplies.",
       color: "blue",
+      path: "/stationery"
     },
     {
       icon: "☕",

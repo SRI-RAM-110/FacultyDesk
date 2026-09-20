@@ -10,6 +10,7 @@ import SeminarHall from "./pages/SeminarHall";
 import MySeminarBookings from "./pages/MySeminarBookings";
 import Accommodation from "./pages/Accommodation";
 import MyAccommodationRequests from "./pages/MyAccommodationRequests";
+import Stationery from "./pages/Stationery";
 
 function App() {
   return (
@@ -29,10 +30,8 @@ function App() {
         <Route path="/transport" element={<Transport />} />
         <Route path="/transport/requests" element={<TransportRequests />}/>
         <Route path="/accommodation" element={<Accommodation />} />
-        <Route
-  path="/my-accommodation-requests"
-  element={<MyAccommodationRequests />}
-/>
+        <Route path="/my-accommodation-requests"element={<MyAccommodationRequests />}/>
+        <Route path="/stationery" element={<Stationery />} />
       </Routes>
     </BrowserRouter>
   );
