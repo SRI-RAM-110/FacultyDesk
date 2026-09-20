@@ -1,0 +1,651 @@
+/* =========================================================
+   MAINTENANCE REQUESTS PAGE
+   ========================================================= */
+
+.maintenance-requests-page {
+  min-height: 100vh;
+  background: #07111f;
+  color: #e8f0f8;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.maintenance-requests-page .maintenance-header {
+  min-height: 82px;
+  padding: 18px 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #0a1626;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+
+.maintenance-requests-page .maintenance-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+.maintenance-requests-page .maintenance-back-button {
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+
+  background: #101f32;
+  color: #dce9f5;
+
+  font-size: 21px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.maintenance-requests-page .maintenance-back-button:hover {
+  background: #162b43;
+  border-color: rgba(34, 211, 238, 0.4);
+}
+
+
+.maintenance-requests-page .maintenance-brand h1 {
+  margin: 0;
+
+  font-size: 23px;
+  font-weight: 700;
+
+  color: #f1f7fc;
+}
+
+
+.maintenance-requests-page .maintenance-brand p {
+  margin: 4px 0 0;
+
+  font-size: 13px;
+  color: #8294a8;
+}
+
+
+.maintenance-requests-page .maintenance-requests-btn {
+  padding: 10px 17px;
+
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 9px;
+
+  background: rgba(34, 211, 238, 0.08);
+  color: #67e8f9;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.maintenance-requests-page .maintenance-requests-btn:hover {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.55);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.maintenance-requests-content {
+  max-width: 1380px;
+
+  margin: 0 auto;
+
+  padding: 34px 42px 60px;
+}
+
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+.maintenance-request-filters {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 22px;
+}
+
+
+.maintenance-filter {
+  padding: 9px 16px;
+
+  border: 1px solid rgba(148, 163, 184, 0.17);
+  border-radius: 8px;
+
+  background: #0b1828;
+  color: #899bad;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.maintenance-filter:hover {
+  color: #dce9f5;
+  border-color: rgba(34, 211, 238, 0.3);
+}
+
+
+.maintenance-filter.active {
+  background: rgba(34, 211, 238, 0.1);
+
+  border-color: rgba(34, 211, 238, 0.45);
+
+  color: #67e8f9;
+}
+
+
+/* =========================================================
+   REQUEST LIST
+   ========================================================= */
+
+.maintenance-request-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+/* =========================================================
+   REQUEST CARD
+   ========================================================= */
+
+.maintenance-request-card {
+  padding: 22px;
+
+  background: #0c192a;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.maintenance-request-card:hover {
+  border-color: rgba(34, 211, 238, 0.28);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   CARD TOP
+   ========================================================= */
+
+.maintenance-request-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+
+.maintenance-request-top span {
+  display: inline-block;
+
+  margin-bottom: 6px;
+
+  color: #38d5ee;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+
+.maintenance-request-top h3 {
+  margin: 0;
+
+  color: #eef6fc;
+
+  font-size: 16px;
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.maintenance-request-status {
+  padding: 6px 11px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+
+/* Pending */
+
+.maintenance-status-pending {
+  background: rgba(245, 158, 11, 0.1);
+
+  border: 1px solid rgba(245, 158, 11, 0.2);
+
+  color: #fbbf24;
+}
+
+
+/* In Progress */
+
+.maintenance-status-progress {
+  background: rgba(59, 130, 246, 0.1);
+
+  border: 1px solid rgba(59, 130, 246, 0.2);
+
+  color: #60a5fa;
+}
+
+
+/* Resolved */
+
+.maintenance-status-resolved {
+  background: rgba(34, 197, 94, 0.1);
+
+  border: 1px solid rgba(34, 197, 94, 0.2);
+
+  color: #4ade80;
+}
+
+
+/* Rejected */
+
+.maintenance-status-rejected {
+  background: rgba(239, 68, 68, 0.1);
+
+  border: 1px solid rgba(239, 68, 68, 0.2);
+
+  color: #f87171;
+}
+
+
+/* Cancelled */
+
+.maintenance-status-cancelled {
+  background: rgba(148, 163, 184, 0.1);
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  color: #a9b7c6;
+}
+
+
+/* =========================================================
+   LOCATION / CATEGORY / PRIORITY
+   ========================================================= */
+
+.maintenance-request-location {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1px;
+
+  margin-top: 18px;
+
+  background: rgba(148, 163, 184, 0.1);
+
+  border: 1px solid rgba(148, 163, 184, 0.1);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+
+.maintenance-request-location > div {
+  min-height: 82px;
+
+  padding: 15px 17px;
+
+  background: #0a1727;
+}
+
+
+.maintenance-request-location span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #687b90;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.maintenance-request-location strong {
+  display: block;
+
+  color: #dce9f5;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+.maintenance-request-location small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #8395a9;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   PROBLEM DESCRIPTION
+   ========================================================= */
+
+.maintenance-request-description {
+  padding: 18px 0;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+
+.maintenance-request-description > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #687b90;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.maintenance-request-description p {
+  margin: 0;
+
+  color: #aab9c8;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CARD BOTTOM
+   ========================================================= */
+
+.maintenance-request-bottom {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding-top: 17px;
+}
+
+
+.maintenance-request-bottom > div > span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #65788d;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+
+.maintenance-request-bottom strong {
+  display: block;
+
+  color: #dbe7f2;
+
+  font-size: 12px;
+}
+
+
+.maintenance-request-bottom small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #73869a;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   VIEW DETAILS BUTTON
+   ========================================================= */
+
+.maintenance-view-btn {
+  padding: 9px 15px;
+
+  border: 1px solid rgba(34, 211, 238, 0.28);
+
+  border-radius: 8px;
+
+  background: rgba(34, 211, 238, 0.07);
+
+  color: #5ee5f7;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.maintenance-view-btn:hover {
+  background: rgba(34, 211, 238, 0.14);
+
+  border-color: rgba(34, 211, 238, 0.48);
+}
+
+
+/* =========================================================
+   LOADING / ERROR / EMPTY
+   ========================================================= */
+
+.maintenance-message {
+  min-height: 180px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  padding: 30px;
+
+  background: #0c192a;
+
+  border: 1px solid rgba(148, 163, 184, 0.13);
+
+  border-radius: 14px;
+
+  color: #8799ac;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+
+.maintenance-message h3 {
+  margin: 0 0 7px;
+
+  color: #e6f0f8;
+
+  font-size: 16px;
+}
+
+
+.maintenance-message p {
+  margin: 0 0 18px;
+
+  color: #788ca0;
+
+  font-size: 12px;
+}
+
+
+.maintenance-message.error {
+  border-color: rgba(239, 68, 68, 0.25);
+
+  color: #f87171;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .maintenance-requests-page .maintenance-header {
+    padding: 17px 25px;
+  }
+
+  .maintenance-requests-content {
+    padding: 28px 25px 50px;
+  }
+
+  .maintenance-request-location {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .maintenance-requests-page .maintenance-header {
+    padding: 15px 18px;
+  }
+
+  .maintenance-requests-content {
+    padding: 22px 16px 40px;
+  }
+
+  .maintenance-requests-page .maintenance-brand h1 {
+    font-size: 19px;
+  }
+
+  .maintenance-requests-page .maintenance-brand p {
+    font-size: 11px;
+  }
+
+  .maintenance-request-filters {
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .maintenance-filter {
+    flex-shrink: 0;
+  }
+
+  .maintenance-request-card {
+    padding: 17px;
+  }
+
+  .maintenance-request-top {
+    gap: 12px;
+  }
+
+  .maintenance-request-top h3 {
+    font-size: 14px;
+  }
+
+  .maintenance-request-bottom {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 14px;
+  }
+
+  .maintenance-view-btn {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 450px) {
+
+  .maintenance-requests-page .maintenance-brand {
+    gap: 9px;
+  }
+
+  .maintenance-requests-page
+  .maintenance-back-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .maintenance-requests-page
+  .maintenance-requests-btn {
+    padding: 9px 11px;
+
+    font-size: 10px;
+  }
+
+  .maintenance-request-card {
+    padding: 15px;
+  }
+
+  .maintenance-request-location > div {
+    min-height: 70px;
+  }
+
+}

@@ -52,6 +52,7 @@ function Dashboard() {
       subtitle: "Request",
       description: "Raise a maintenance request for department facilities.",
       color: "purple",
+      path: "/maintenance"
     },
     {
       icon: "⚒",

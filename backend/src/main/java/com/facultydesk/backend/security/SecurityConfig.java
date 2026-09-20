@@ -23,8 +23,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter
-    ) {
+            JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
@@ -35,61 +34,73 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
+            HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())
 
-            .cors(cors ->
-                cors.configurationSource(corsConfigurationSource())
-            )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(
-                    SessionCreationPolicy.STATELESS
-                )
-            )
+                .sessionManagement(session -> session.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS))
 
-            .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
 
-                // Authentication endpoints
-                .requestMatchers(
-                    "/api/auth/register",
-                    "/api/auth/login",
-                    "/api/transport/**"
-                ).permitAll()
+                        // Authentication endpoints
+                        .requestMatchers(
+                                "/api/auth/register",
+                                "/api/auth/login",
+                                "/api/transport/**")
+                        .permitAll()
 
-                // CORS preflight
-                .requestMatchers(
-                    HttpMethod.OPTIONS,
-                    "/**"
-                ).permitAll()
+                        // Maintenance - logged-in users can create/view
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/maintenance/request")
+                        .authenticated()
 
-                // Seminar hall endpoints
-                .requestMatchers(
-                    HttpMethod.GET,
-                    "/api/seminar/halls"
-                ).authenticated()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/maintenance/requests",
+                                "/api/maintenance/requests/**")
+                        .authenticated()
 
-                .requestMatchers(
-                    HttpMethod.GET,
-                    "/api/seminar/bookings/**"
-                ).authenticated()
+                        // Only maintenance/admin users can change status
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/maintenance/requests/*/status")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MAINTENANCE")
 
-                .requestMatchers(
-                    HttpMethod.POST,
-                    "/api/seminar/bookings"
-                ).authenticated()
+                        // CORS preflight
+                        .requestMatchers(
+                                HttpMethod.OPTIONS,
+                                "/**")
+                        .permitAll()
 
-                // Everything else
-                .anyRequest().authenticated()
-            )
+                        // Seminar hall endpoints
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/seminar/halls")
+                        .authenticated()
 
-            .addFilterBefore(
-                jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class
-            );
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/seminar/bookings/**")
+                        .authenticated()
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/seminar/bookings")
+                        .authenticated()
+
+                        // Everything else
+                        .anyRequest().authenticated())
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -97,36 +108,29 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration =
-                new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
-        );
+                List.of("http://localhost:5173"));
 
         configuration.setAllowedMethods(
                 List.of(
-                    "GET",
-                    "POST",
-                    "PUT",
-                    "DELETE",
-                    "OPTIONS"
-                )
-        );
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"));
 
         configuration.setAllowedHeaders(
-                List.of("*")
-        );
+                List.of("*"));
 
         configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration(
                 "/**",
-                configuration
-        );
+                configuration);
 
         return source;
     }

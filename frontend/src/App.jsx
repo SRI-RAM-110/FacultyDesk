@@ -4,6 +4,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Transport from "./pages/Transport";
 import TransportRequests from "./pages/TransportRequests";
+import Maintenance from "./pages/Maintenance";
+import MaintenanceRequests from "./pages/MaintenanceRequests";
 
 function App() {
   return (
@@ -12,9 +14,11 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transport" element={<Transport />} />
-        <Route path="/transport/requests" element={<TransportRequests />}/>
+        <Route path="/transport/requests" element={<TransportRequests />} />
+        <Route path="/maintenance" element={<Maintenance />}/>
+        <Route path="/maintenance/requests" element={<MaintenanceRequests />}/>
       </Routes>
     </BrowserRouter>
   );
