@@ -452,13 +452,13 @@ function Transport() {
               </div>
             </div>
 
-            <div className="readonly-field">
+            {/* <div className="readonly-field">
               <label>Designation</label>
 
               <div>
                 Head of Department
               </div>
-            </div>
+            </div> */}
 
             <div className="readonly-field">
               <label>Requesting Department</label>

@@ -337,10 +337,10 @@ const requestData = {
                   <div>{displayName}</div>
                 </div>
 
-                <div className="maintenance-readonly">
+                {/* <div className="maintenance-readonly">
                   <label>Designation</label>
                   <div>Head of Department</div>
-                </div>
+                </div> */}
 
                 <div className="maintenance-readonly">
                   <label>Department</label>
