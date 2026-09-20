@@ -37,13 +37,14 @@ function Dashboard() {
       color: "blue",
       path: "/seminar-hall",
     },
-    
+
     {
       icon: "▰",
       title: "Transport",
       subtitle: "Request",
       description: "Request college transport for official use.",
       color: "cyan",
+      path: "/transport",
     },
     {
       icon: "⚒",
@@ -66,7 +67,7 @@ function Dashboard() {
       description: "Access academic forms, syllabi, and useful resources.",
       color: "magenta",
     },
-    
+
   ];
 
   /* =====================================================
@@ -662,10 +663,9 @@ function Dashboard() {
                   className={`
                     calendar-day
                     ${item.empty ? "empty" : ""}
-                    ${
-                      selectedDate === item.day
-                        ? "active"
-                        : ""
+                    ${selectedDate === item.day
+                      ? "active"
+                      : ""
                     }
                   `}
                   onClick={() => {

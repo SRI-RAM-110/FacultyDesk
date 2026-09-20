@@ -56,7 +56,8 @@ public class SecurityConfig {
                 // Authentication endpoints
                 .requestMatchers(
                     "/api/auth/register",
-                    "/api/auth/login"
+                    "/api/auth/login",
+                    "/api/transport/**"
                 ).permitAll()
 
                 // CORS preflight

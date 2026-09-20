@@ -1,0 +1,12 @@
+package com.facultydesk.backend.repository;
+
+import com.facultydesk.backend.entity.Bus;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface BusRepository extends JpaRepository<Bus, Long> {
+
+    List<Bus> findByAvailableTrue();
+
+}
