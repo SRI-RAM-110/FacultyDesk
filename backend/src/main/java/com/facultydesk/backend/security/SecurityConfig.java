@@ -58,6 +58,34 @@ public class SecurityConfig {
                     "/api/transport/**"
                 ).permitAll()
 
+                // Stationery endpoints
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/stationery/items",
+                    "/api/stationery/items/**"
+                ).authenticated()
+
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/api/stationery/orders"
+                ).authenticated()
+
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/stationery/orders",
+                    "/api/stationery/orders/**"
+                ).authenticated()
+
+                .requestMatchers(
+                    HttpMethod.PUT,
+                    "/api/stationery/orders/*/cancel"
+                ).authenticated()
+
+                .requestMatchers(
+                    HttpMethod.PUT,
+                    "/api/stationery/orders/*/status"
+                ).hasRole("ADMIN")
+
                 // CORS preflight
                 .requestMatchers(
                     HttpMethod.OPTIONS,

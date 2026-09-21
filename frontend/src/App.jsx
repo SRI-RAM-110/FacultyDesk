@@ -10,6 +10,9 @@ import SeminarHall from "./pages/SeminarHall";
 import MySeminarBookings from "./pages/MySeminarBookings";
 import Accommodation from "./pages/Accommodation";
 import MyAccommodationRequests from "./pages/MyAccommodationRequests";
+import Stationery from "./pages/Stationery";
+import TeaSnacks from "./pages/TeaSnacks";
+import OrderTeaSnacks from "./pages/OrderTeaSnacks";
 
 function App() {
   return (
@@ -29,9 +32,16 @@ function App() {
         <Route path="/transport" element={<Transport />} />
         <Route path="/transport/requests" element={<TransportRequests />}/>
         <Route path="/accommodation" element={<Accommodation />} />
+        <Route path="/my-accommodation-requests"element={<MyAccommodationRequests />}/>
+        <Route path="/stationery" element={<Stationery />} />
         <Route
-  path="/my-accommodation-requests"
-  element={<MyAccommodationRequests />}
+  path="/tea-snacks"
+  element={<TeaSnacks />}
+/>
+
+<Route
+  path="/order-tea-snacks"
+  element={<OrderTeaSnacks />}
 />
       </Routes>
     </BrowserRouter>
