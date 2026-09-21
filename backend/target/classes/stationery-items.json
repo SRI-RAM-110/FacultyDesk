@@ -1,0 +1,12 @@
+[
+  {"id":1,"name":"Ball Pen - Blue","category":"Writing","description":"Blue ball point pen","price":10.00,"active":true},
+  {"id":2,"name":"Ball Pen - Black","category":"Writing","description":"Black ball point pen","price":10.00,"active":true},
+  {"id":3,"name":"Ball Pen - Red","category":"Writing","description":"Red ball point pen","price":10.00,"active":true},
+  {"id":4,"name":"A4 Notebook","category":"Paper","description":"Ruled A4 notebook","price":85.00,"active":true},
+  {"id":5,"name":"A4 Copier Paper","category":"Paper","description":"500-sheet A4 paper ream","price":320.00,"active":true},
+  {"id":6,"name":"HB Pencil","category":"Writing","description":"HB graphite pencil","price":8.00,"active":true},
+  {"id":7,"name":"Whiteboard Marker","category":"Writing","description":"Black whiteboard marker","price":35.00,"active":true},
+  {"id":8,"name":"Stapler","category":"Desk Supplies","description":"Standard desktop stapler","price":140.00,"active":true},
+  {"id":9,"name":"Staple Pins","category":"Desk Supplies","description":"Box of standard staples","price":25.00,"active":true},
+  {"id":10,"name":"File Folder","category":"Filing","description":"Document file folder","price":18.00,"active":true}
+]
