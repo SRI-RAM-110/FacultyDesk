@@ -59,23 +59,17 @@ function Dashboard() {
       title: "Accomudation",
       subtitle: "Request",
       description: "Raise a Accomudation request for department facilities.",
-      color: "purple",
+      color: "blue",
       path: "/accommodation",
     },
-    {
-      icon: "▥",
-      title: "Academic",
-      subtitle: "Resources",
-      description: "Access academic forms, syllabi, and useful resources.",
-      color: "magenta",
-    },
+
     {
       icon: "▤",
       title: "Stationery",
       subtitle: "Request",
       description:
         "Request and manage stationery items and essential office supplies.",
-      color: "blue",
+      color: "purple",
       path: "/stationery"
     },
     {
@@ -84,7 +78,7 @@ function Dashboard() {
       subtitle: "Snacks",
       description:
         "Request tea, snacks, and refreshments for meetings and campus activities.",
-      color: "orange",
+      color: "magenta",
       path: "/tea-snacks"
     },
   ];
@@ -271,7 +265,7 @@ function Dashboard() {
           MAIN
       ================================================= */}
 
-+++      <main className="dashboard-content">
+      <main className="dashboard-content">
         {/* HERO */}
 
         <section className="hero-layout">
