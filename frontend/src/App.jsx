@@ -13,6 +13,7 @@ import MyAccommodationRequests from "./pages/MyAccommodationRequests";
 import Stationery from "./pages/Stationery";
 import TeaSnacks from "./pages/TeaSnacks";
 import OrderTeaSnacks from "./pages/OrderTeaSnacks";
+import MyTeaSnacksOrders from "./pages/MyTeaSnacksOrders";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
         <Route
   path="/tea-snacks"
   element={<TeaSnacks />}
+/>
+<Route
+  path="/my-tea-snacks-orders"
+  element={<MyTeaSnacksOrders />}
 />
 
 <Route

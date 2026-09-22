@@ -9,8 +9,10 @@ function Dashboard() {
   const facultyData = localStorage.getItem("faculty");
   const faculty = facultyData ? JSON.parse(facultyData) : null;
 
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 8, 18));
-  const [selectedDate, setSelectedDate] = useState(18);
+  const today = new Date();
+
+  const [currentDate, setCurrentDate] = useState(today);
+  const [selectedDate, setSelectedDate] = useState(today.getDate());
   const [showAllAnnouncements, setShowAllAnnouncements] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
 
@@ -70,7 +72,7 @@ function Dashboard() {
       description:
         "Request and manage stationery items and essential office supplies.",
       color: "purple",
-      path: "/stationery"
+      path: "/stationery",
     },
     {
       icon: "☕",
@@ -79,7 +81,7 @@ function Dashboard() {
       description:
         "Request tea, snacks, and refreshments for meetings and campus activities.",
       color: "magenta",
-      path: "/tea-snacks"
+      path: "/tea-snacks",
     },
   ];
 

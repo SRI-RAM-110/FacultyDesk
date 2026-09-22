@@ -1,0 +1,561 @@
+/* =========================================
+   MY TEA & SNACKS ORDERS
+========================================= */
+
+.my-tea-orders-page {
+  min-height: 100vh;
+
+  padding: 36px 50px 60px;
+
+  box-sizing: border-box;
+
+  background: #070b12;
+  color: #f8fafc;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.my-orders-header {
+  max-width: 1100px;
+
+  margin: 0 auto 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+.my-orders-label {
+  margin: 0 0 7px;
+
+  color: #818cf8;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+.my-orders-header h1 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.my-orders-header p:last-child {
+  margin: 8px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.my-orders-back-button {
+  height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #263244;
+  border-radius: 9px;
+
+  background: #0d131d;
+  color: #f8fafc;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.my-orders-back-button:hover {
+  background: #151d29;
+
+  border-color: #39465a;
+}
+
+/* =========================================
+   ORDERS LIST
+========================================= */
+
+.orders-list {
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+/* =========================================
+   ORDER CARD
+========================================= */
+
+.tea-order-card {
+  padding: 20px;
+
+  background: #0d131d;
+
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.tea-order-card:hover {
+  border-color: #334155;
+
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   ORDER TOP
+========================================= */
+
+.tea-order-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-bottom: 16px;
+
+  border-bottom: 1px solid #1f2937;
+}
+
+.order-id-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+.tea-order-top h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 16px;
+  font-weight: 650;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+.order-status {
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+}
+
+.status-pending {
+  background: #29220d;
+  color: #fbbf24;
+}
+
+.status-approved {
+  background: #0c291c;
+  color: #4ade80;
+}
+
+.status-rejected {
+  background: #2a1014;
+  color: #f87171;
+}
+
+.status-cancelled {
+  background: #172033;
+  color: #94a3b8;
+}
+
+/* =========================================
+   ORDER DETAILS
+========================================= */
+
+.tea-order-details {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 18px 0;
+}
+
+.order-detail {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.order-detail span {
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+.order-detail strong {
+  color: #cbd5e1;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================
+   ITEMS
+========================================= */
+
+.ordered-items {
+  padding-top: 15px;
+
+  border-top: 1px solid #1f2937;
+}
+
+.ordered-items h3 {
+  margin: 0 0 12px;
+
+  color: #e2e8f0;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.ordered-items-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.ordered-item {
+  min-height: 48px;
+
+  padding: 7px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-radius: 8px;
+
+  background: #080e17;
+}
+
+.ordered-item-left {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.ordered-item-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: #151d29;
+
+  font-size: 16px;
+}
+
+.ordered-item-left > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.ordered-item-left strong {
+  color: #e2e8f0;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ordered-item-left span {
+  color: #64748b;
+
+  font-size: 9px;
+}
+
+.ordered-item > strong {
+  color: #f8fafc;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   INSTRUCTIONS
+========================================= */
+
+.order-instructions {
+  margin-top: 14px;
+
+  padding: 11px 12px;
+
+  border-radius: 8px;
+
+  background: #111827;
+}
+
+.order-instructions span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.order-instructions p {
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+/* =========================================
+   MESSAGE / EMPTY STATE
+========================================= */
+
+.orders-message {
+  max-width: 450px;
+
+  margin: 100px auto;
+
+  padding: 35px 25px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  background: #0d131d;
+
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+}
+
+.orders-message h3 {
+  margin: 0 0 8px;
+
+  color: #f8fafc;
+
+  font-size: 18px;
+}
+
+.orders-message p {
+  margin: 0 0 20px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.orders-message button {
+  height: 40px;
+
+  padding: 0 18px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #6366f1;
+  color: white;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.orders-message button:hover {
+  background: #4f46e5;
+}
+
+/* =========================================
+   EMPTY ICON
+========================================= */
+
+.empty-order-icon {
+  width: 48px;
+  height: 48px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #151d29;
+
+  font-size: 22px;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading-spinner {
+  width: 26px;
+  height: 26px;
+
+  margin: 0 auto 15px;
+
+  border: 3px solid #263244;
+  border-top-color: #6366f1;
+
+  border-radius: 50%;
+
+  animation: order-spin 0.8s linear infinite;
+}
+
+@keyframes order-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-message {
+  border-color: #4c1d1d;
+}
+
+.error-message h3 {
+  color: #fca5a5;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 850px) {
+  .my-tea-orders-page {
+    padding: 30px 25px 50px;
+  }
+
+  .tea-order-details {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .my-tea-orders-page {
+    padding: 25px 16px 40px;
+  }
+
+  .my-orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-orders-header h1 {
+    font-size: 27px;
+  }
+
+  .my-orders-back-button {
+    align-self: flex-start;
+  }
+
+  .tea-order-card {
+    padding: 16px;
+  }
+
+  .tea-order-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tea-order-details {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+  .my-tea-orders-page {
+    padding: 22px 12px 35px;
+  }
+
+  .tea-order-details {
+    grid-template-columns: 1fr;
+  }
+
+  .ordered-item {
+    padding: 7px;
+  }
+}

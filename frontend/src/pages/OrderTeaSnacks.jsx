@@ -50,15 +50,24 @@ function OrderTeaSnacks() {
     try {
       setLoading(true);
 
-      const facultyId = localStorage.getItem("facultyId");
+      const storedFaculty = localStorage.getItem("faculty");
 
-      if (!facultyId) {
-        setError(
-          "Faculty information not found. Please login again."
-        );
-        setLoading(false);
-        return;
-      }
+if (!storedFaculty) {
+  setError("Faculty information not found. Please login again.");
+  setLoading(false);
+  return;
+}
+
+const faculty = JSON.parse(storedFaculty);
+
+// This is the database primary key (Long)
+const facultyId = faculty.id;
+
+if (!facultyId) {
+  setError("Faculty database ID not found. Please login again.");
+  setLoading(false);
+  return;
+}
 
       const orderData = {
         facultyId: Number(facultyId),
